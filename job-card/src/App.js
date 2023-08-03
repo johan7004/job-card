@@ -1,6 +1,33 @@
 import "./App.css";
 
 function App() {
+  const skills = [
+    {
+      skill: "HTML",
+      level: "advanced",
+      color: "#ffeeff",
+    },
+    {
+      skill: "JS",
+      level: "advanced",
+      color: "#fff888",
+    },
+    {
+      skill: "React",
+      level: "advanced",
+      color: "#88ff",
+    },
+    {
+      skill: "Next.js",
+      level: "intermediate",
+      color: "#99ffff",
+    },
+    {
+      skill: "flutter",
+      level: "beginner",
+      color: "#99ffff",
+    },
+  ];
   return (
     <div className="App">
       <div className="card__container">
@@ -10,11 +37,11 @@ function App() {
           introDescription="Front End Developer in Global Data and forever learner of programming languages"
         />
         <div className="skill-list__container">
-          
-          <SkillSet skillSetName="Git and Github" skillSetColor="red" />
-          <SkillSet skillSetName="JavaScript" skillSetColor="yellow" />
-          <SkillSet skillSetName="HTML + CSS" skillSetColor="blue" />
-          <SkillSet skillSetName="Python" skillSetColor="#DBDBDB" />
+          {skills.map((skill) => {
+           return <SkillSet skillData={skill} />;
+          })}
+
+     
         </div>
       </div>
     </div>
@@ -38,13 +65,25 @@ function Avatar({ imageSource }) {
   );
 }
 
-function SkillSet({ skillSetName, skillSetColor }) {
+function SkillSet({ skillData }) {
+  const skillName = skillData.skill;
+  const skillLevel = skillData.level;
+  const skillColor = skillData.color;
   return (
     <div
       className="skillset__container"
-      style={{ backgroundColor: `${skillSetColor}` }}
+      style={{ backgroundColor: `${skillColor}` }}
     >
-      <p>{skillSetName}</p>
+      <p>
+        {skillName}
+        {skillLevel === "advanced" ? (
+          <span>👌</span>
+        ) : skillLevel === "intermediate" ? (
+          <span>👍</span>
+        ) : skillLevel === "beginner" ? (
+          <span>🤷‍♂️</span>
+        ) : null}
+      </p>
     </div>
   );
 }
