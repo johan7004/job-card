@@ -48,8 +48,6 @@ const pizzaData = [
 ];
 
 function App() {
-  // components name should start with Upper case
-
   return (
     <div className="container">
       <Header />
@@ -60,46 +58,61 @@ function App() {
 }
 
 function Header() {
+  // const style = { color: "red", fontSize: "48px", textTransform: "uppercase" };
+  const style = {};
+
   return (
-    <header className="header footer">
-      <h1>Fast React Pizza Co.</h1>
+    <header className="header">
+      <h1 style={style}>Fast React Pizza Co.</h1>
     </header>
   );
 }
 
-function Pizza(props) {
-
-  if(props.pizzaDetails.soldOut) return null;
-  return (
-    <li className="pizza">
-      <img src={props.pizzaDetails.photoName} alt="pizza-menu" />
-      <div>
-        <p>{props.pizzaDetails.name}</p>
-        <span>{props.pizzaDetails.ingredients}</span>
-        <span>{props.pizzaDetails.price}</span>
-      </div>
-    </li>
-  );
-  // components need to return something
-}
-
 function Menu() {
   const pizzas = pizzaData;
+  // const pizzas = [];
   const numPizzas = pizzas.length;
+
   return (
     <main className="menu">
-      <h3>Our Menu</h3>
+      <h2>Our menu</h2>
 
       {numPizzas > 0 ? (
-        <ul className="pizzas">
-          {pizzaData.map((pizza, index) => {
-            return <Pizza key={index} pizzaDetails={pizza} />;
-          })}
-        </ul>
+        <>
+          <p>
+            Authentic Italian cuisine. 6 creative dishes to choose from. All
+            from our stone oven, all organic, all delicious.
+          </p>
+
+          <ul className="pizzas">
+            {pizzas.map((pizza) => (
+              <Pizza pizzaObj={pizza} key={pizza.name} />
+            ))}
+          </ul>
+        </>
       ) : (
-        <p>We're still working on our menu, please come back later :)</p>
+        <p>We're still working on our menu. Please come back later :)</p>
       )}
+
     </main>
+  );
+}
+
+function Pizza({ pizzaObj }) {
+  console.log(pizzaObj);
+
+  // if (pizzaObj.soldOut) return null;
+
+  return (
+    <li className={`pizza ${pizzaObj.soldOut ? "sold-out" : ""}`}>
+      <img src={pizzaObj.photoName} alt={pizzaObj.name} />
+      <div>
+        <h3>{pizzaObj.name}</h3>
+        <p>{pizzaObj.ingredients}</p>
+
+        <span>{pizzaObj.soldOut ? "SOLD OUT" : pizzaObj.price}</span>
+      </div>
+    </li>
   );
 }
 
@@ -107,45 +120,48 @@ function Footer() {
   const hour = new Date().getHours();
   const openHour = 12;
   const closeHour = 22;
-
   const isOpen = hour >= openHour && hour <= closeHour;
+  console.log(isOpen);
 
-  // if(hour >= openHour && hour <=closeHour) alert("we are open");
-  // else alert (`sorry we are closed`);
-  // we must use classNames not class as it is a reserved in JS
+  // if (hour >= openHour && hour <= closeHour) alert("We're currently open!");
+  // else alert("Sorry we're closed");
+
+  // if (!isOpen) return <p>CLOSED</p>;
+
   return (
     <footer className="footer">
-      {/*new Date().toLocaleTimeString()} We are currently open*/}
-
       {isOpen ? (
-        <Order closing={closeHour} />
+        <Order closeHour={closeHour} openHour={openHour} />
       ) : (
         <p>
-          We are happy to welcome you between {openHour}:00 and {closeHour}:00
+          We're happy to welcome you between {openHour}:00 and {closeHour}:00.
         </p>
       )}
     </footer>
   );
+
+  // return React.createElement("footer", null, "We're currently open!");
 }
 
-function Order({closing}) {
+function Order({ closeHour, openHour }) {
   return (
     <div className="order">
-      <p>we are open until {closing}:00. Come visit us or order</p>
+      <p>
+        We're open from {openHour}:00 to {closeHour}:00. Come visit us or order
+        online.
+      </p>
       <button className="btn">Order</button>
     </div>
   );
 }
-// React v18
 
+// React v18
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  // strict mode renders Twice to indentify bugs, usually used in Dev mode
   <React.StrictMode>
     <App />
   </React.StrictMode>
 );
 
 // React before 18
-
-//React.render(<App/>)
+// ReactDOM.render(<App />, document.getElementById("root"));
